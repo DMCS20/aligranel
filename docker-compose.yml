@@ -1,0 +1,34 @@
+version: "3"
+
+services:
+  webapp:
+    container_name: aligranel_app
+    restart: always
+    build:
+      context: ./Backend/aligranel 
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - database
+  database:
+    container_name: aligranel_db
+    restart: always
+    ports:
+      - "27019:27017"
+    image: mongo
+    volumes:
+      - mongo_data:/data/db
+    
+  frontend:
+    container_name: aligranel_frontend
+    build:
+      context: ./Frontend/Aligranel 
+      dockerfile: Dockerfile
+    ports: 
+      - "4200:80"
+    depends_on:
+      - webapp 
+
+volumes:
+  mongo_data:
